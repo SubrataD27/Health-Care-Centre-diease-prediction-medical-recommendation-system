@@ -3,7 +3,7 @@
 - BY SUBRATA DHIBAR
 
 
-- 
+
 # Disease Prediction and Medical Recommendation System 🩺
 
 This repository contains the implementation of a Disease Prediction and Medical Recommendation System developed for the CS 584 Machine Learning course.
