@@ -46,7 +46,7 @@ To run the Disease Prediction and Medical Recommendation System:
 
 2. **Navigate to the project directory:**
    ```bash
-   cd ML_project
+   cd project_directory
 
 3. **Start the Flask application:**
    ```bash
