@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('static/bgCover.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            background-blend-mode: overlay;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .myimg {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+        }
+
+        .title-symptoms {
+            color: #10045F;
+            font-weight: bold;
+        }
+
+        .message-text {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn {
+            background-color: #10045F;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #3424A1;
+        }
+
+        .footer {
+            background-color: rgba(16, 4, 95, 0.9);
+            color: white;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .navbar {
+            background-image: linear-gradient(to bottom, #10045F, #3424A1);
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .table {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+
+        h4 {
+            font-weight: bold;
+            color: #10045F;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+        }
+
+        .news-frame {
+            background: linear-gradient(to right, #3424A1, #10045F);
+            border-radius: 15px;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-frame h5 {
+            font-weight: bold;
+            color: #FFDD44;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <div class="logo">
+            <img class="myimg" src="static/img.png" alt="Logo">
+            <h5 class="m-0">Disease Prediction & Medical Recommendation</h5>
+        </div>
+        <a class="btn btn-outline-light" href="/" id="resetButton">Reset</a>
+    </div>
+</nav>
+
+<!-- News Frame -->
+<div class="container">
+    <div class="news-frame text-center fade-in">
+        <h5>Stay Informed: Health News Updates</h5>
+        <p>Discover the latest in healthcare innovation, medical advancements, and tips for a healthier life!</p>
+    </div>
+</div>
+
+<!-- Main form -->
+<div class="container shadow-lg fade-in">
+    <form action="/predict" method="post" onsubmit="return validateForm()">
+        <div class="form-group mb-3">
+            <label for="symptoms" class="title-symptoms">Type your symptoms:</label>
+            <input type="text" class="form-control form-control-lg" id="symptoms" name="symptoms" placeholder="E.g., headache, mild fever, acidity...">
+        </div>
+        {% if message %}
+        <p class="message-text">{{ message }}</p>
+        {% endif %}
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-lg" style="width: 50%;">Predict</button>
+        </div>
+    </form>
+</div>
+
+{% if predicted_disease %}
+<!-- Results -->
+<h4 class="text-center my-4 fade-in">Predicted Results</h4>
+<div class="container shadow-lg fade-in">
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th colspan="2" class="text-center">Predictions for: {{ symptoms }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Disease</th>
+                <td>{{ predicted_disease }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ dis_des }}</td>
+            </tr>
+            <tr>
+                <th>Precautions</th>
+                <td>
+                    <ul>
+                        {% for precaution in my_precautions %}
+                        <li>{{ precaution }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Medications</th>
+                <td>
+                    <ul>
+                        {% for medication in medications %}
+                        <li>{{ medication }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Workout</th>
+                <td>
+                    <ul>
+                        {% for exercise in workout %}
+                        <li>{{ exercise }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Diet</th>
+                <td>
+                    <ul>
+                        {% for food in my_diet %}
+                        <li>{{ food }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- Footer -->
+<div class="footer">
+    <h6><i>Made with ❤️ by Subrata Dhibar</i></h6>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+ZL41b/hqpDQUFVSmg82xUyJPovgmkHmdvKvQAnlfbJlwY/uL1QQ5FdWlEdt0f" crossorigin="anonymous"></script>
+<script>
+    function validateForm() {
+        const symptoms = document.getElementById('symptoms').value.trim();
+        if (!symptoms) {
+            alert('Please enter symptoms before submitting.');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>
